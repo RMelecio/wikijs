@@ -1,0 +1,29 @@
+version: "3"
+services:
+
+  wiki:
+    image: ghcr.io/requarks/wiki:2
+    depends_on:
+      - db
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: wikijs
+      DB_PASS: wikijsrocks
+      DB_NAME: wiki
+    restart: unless-stopped
+    ports:
+      - "8007:3000"
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: wikiroot
+      MYSQL_DATABASE: wiki
+      MYSQL_PASSWORD: wikijsrocks
+      MYSQL_USER: wikijs
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - ./volume:/var/lib/mysql
